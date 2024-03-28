@@ -1,6 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:kids_story/models/chapter_page_details.dart';
+import 'package:kids_story/utils/chapters_data_list.dart';
 import 'package:kids_story/utils/utils.dart';
 
 part './widgets/story_content.dart';
@@ -16,33 +16,13 @@ class _StoryPageState extends State<StoryPage> {
   final PageController _pageController = PageController(viewportFraction: 0.85);
   AudioPlayer audioPlayer = AudioPlayer();
   int _currentPage = 0;
-  List<ChapterPageDetails> chapters = [
-    ChapterPageDetails(
-      chapterTitle: "Chapter 12",
-      chapterPageTitle: "Timmy the Turtle's Quick Dash",
-      chapterPageContentPart1:
-          "In a cozy corner of the forest, Timmy the Turtle dreamed of racing. He may have been the slowest, but his spirit was the mightiest.",
-      chapterPageContentPart2:
-          "The animals gathered for a forest race, and Timmy joined in. Off they went, and though Timmy lagged behind, he never stopped.",
-      chapterPageImage: "assets/images/image1.png",
-      chapterPageAudio: "audio/page1.mp3",
-    ),
-    ChapterPageDetails(
-      chapterPageContentPart1:
-          "Benny the Rabbit, quick and spry, stopped for a snack, sure of his win. But while Benny munched, Timmy inched past, determined and unwavering. As the finish line approached, the animals cheered. Timmy, step by tiny step, made it there first",
-      chapterPageContentPart2:
-          "The forest learned that day, from Timmy's tiny triumph, that it's not just speed but heart that wins the race.",
-      chapterPageImage: "assets/images/image2.png",
-      chapterPageAudio: "audio/page2.mp3",
-    ),
-  ];
 
   @override
   void initState() {
     super.initState();
     _playAudio(_currentPage);
     audioPlayer.onPlayerComplete.listen((event) {
-      if ((_currentPage + 1) != chapters.length) {
+      if ((_currentPage + 1) != ChaptersDataList.chapters.length) {
         _pageController.animateToPage(
           _currentPage + 1,
           duration: const Duration(milliseconds: 400),
@@ -56,7 +36,7 @@ class _StoryPageState extends State<StoryPage> {
     await audioPlayer.stop();
     await audioPlayer.play(
       AssetSource(
-        chapters[pageIndex].chapterPageAudio,
+        ChaptersDataList.chapters[pageIndex].chapterPageAudio,
       ),
     );
   }
@@ -91,7 +71,8 @@ class _StoryPageState extends State<StoryPage> {
               child: SizedBox(
                 width: 30,
                 child: ListView.builder(
-                  itemCount: chapters.length, // The count of chapters
+                  itemCount:
+                      ChaptersDataList.chapters.length, // The count of chapters
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
@@ -150,18 +131,18 @@ class _StoryPageState extends State<StoryPage> {
                   });
                   _playAudio(page);
                 },
-                itemCount: chapters.length, // The count of chapters/pages
+                itemCount: ChaptersDataList
+                    .chapters.length, // The count of chapters/pages
                 itemBuilder: (context, index) {
+                  final chapter = ChaptersDataList.chapters[index];
                   return StoryContent(
                     index: index + 1,
-                    chapterTitle: chapters[index].chapterTitle,
-                    chapterPageTitle: chapters[index].chapterPageTitle,
-                    chapterPageContentPart1:
-                        chapters[index].chapterPageContentPart1,
-                    chapterPageContentPart2:
-                        chapters[index].chapterPageContentPart2,
-                    chapterPageImage: chapters[index].chapterPageImage,
-                    chapterPageAudio: chapters[index].chapterPageAudio,
+                    chapterTitle: chapter.chapterTitle,
+                    chapterPageTitle: chapter.chapterPageTitle,
+                    chapterPageContentPart1: chapter.chapterPageContentPart1,
+                    chapterPageContentPart2: chapter.chapterPageContentPart2,
+                    chapterPageImage: chapter.chapterPageImage,
+                    chapterPageAudio: chapter.chapterPageAudio,
                   );
                 },
               ),
