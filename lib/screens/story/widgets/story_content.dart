@@ -41,6 +41,9 @@ class StoryContent extends StatelessWidget {
                     fontStyle: FontStyle.normal,
                   ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Text(
                   chapterPageTitle!,
                   style: const TextStyle(

@@ -42,11 +42,13 @@ class _StoryPageState extends State<StoryPage> {
     super.initState();
     _playAudio(_currentPage);
     audioPlayer.onPlayerComplete.listen((event) {
-      _pageController.animateToPage(
-        _currentPage + 1,
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeOutQuint,
-      );
+      if ((_currentPage + 1) != chapters.length) {
+        _pageController.animateToPage(
+          _currentPage + 1,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeOutQuint,
+        );
+      }
     });
   }
 
